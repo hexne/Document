@@ -8,22 +8,37 @@ long long func(long long n) {
 	if (n < 2)
 		return n;
 	return func(n - 1) + func(n - 2);
-
 	
 }
 
+struct Func {
+    int operator()() {
+        int i = 10;
+        while (i--)
+            std::cout << i << ' ';
+        std::cout << "\nFucn operator ()" << std::endl;
+        return 0;
+    }
+};
+
 
 int main() {
+
+    // é»˜è®¤æž„é€ å‡½æ•°æ²¡æœ‰å…³è”çº¿ç¨‹ï¼Œä¸ä¼šå¯åŠ¨çº¿ç¨‹æ‰§è¡Œä»»åŠ¡
+    std::thread t;
+
 	int n = 42;
-	// Ïß³Ìº¯ÊýÎªfunc,²ÎÊýÎªn,´«Öµ
+	// çº¿ç¨‹å‡½æ•°ä¸ºfunc,å‚æ•°ä¸ºn,ä¼ å€¼
 	thread t1(func,n);
-	// Í¬t1,µ«ÊÇ²ÎÊý´«µÝÎªÒýÓÃ
+	// åŒt1,ä½†æ˜¯å‚æ•°ä¼ é€’ä¸ºå¼•ç”¨
 	
 	thread t2(func, ref(n));
 
 	
-	// t3 ÔËÐÐfunc,t2²»ÔÙÊÇÏß³Ì
+	// t3 è¿è¡Œfunc,t2ä¸å†æ˜¯çº¿ç¨‹
 	thread t3(move(t2));
+
+    std::thread t4(Func{});
 	
 	thread::id id1 = t1.get_id();
 	thread::id id3 = t3.get_id();
@@ -31,27 +46,27 @@ int main() {
 	cout << "thread 3 id : " << id3 << endl;
 
 	cout << "thread 1 handle: " << t1.native_handle() << endl;
-	cout << "Ö§³ÖµÄ²¢·¢Ïß³ÌÊý" << t1.hardware_concurrency() << endl;
+	cout << "æ”¯æŒçš„å¹¶å‘çº¿ç¨‹æ•°" << std::thread::hardware_concurrency() << endl;
 
 	// t1.join();
-	// Detach Ïß³Ì¡£ ½«µ±Ç°Ïß³Ì¶ÔÏóËù´ú±íµÄÖ´ÐÐÊµÀýÓë¸ÃÏß³Ì¶ÔÏó·ÖÀë£¬Ê¹µÃÏß³ÌµÄÖ´ÐÐ¿ÉÒÔµ¥¶À½øÐÐ¡£Ò»µ©Ïß³ÌÖ´ÐÐÍê±Ï£¬ËüËù·ÖÅäµÄ×ÊÔ´½«»á±»ÊÍ·Å¡£
+	// Detach çº¿ç¨‹ã€‚ å°†å½“å‰çº¿ç¨‹å¯¹è±¡æ‰€ä»£è¡¨çš„æ‰§è¡Œå®žä¾‹ä¸Žè¯¥çº¿ç¨‹å¯¹è±¡åˆ†ç¦»ï¼Œä½¿å¾—çº¿ç¨‹çš„æ‰§è¡Œå¯ä»¥å•ç‹¬è¿›è¡Œã€‚ä¸€æ—¦çº¿ç¨‹æ‰§è¡Œå®Œæ¯•ï¼Œå®ƒæ‰€åˆ†é…çš„èµ„æºå°†ä¼šè¢«é‡Šæ”¾ã€‚
 	t1.detach();
-	// ¼ì²éµ±Ç°µÄÏß³Ì¶ÔÏóÊÇ·ñ±íÊ¾ÁËÒ»¸ö»î¶¯µÄÖ´ÐÐÏß³Ì,ÊÇ·ñ¿É±»join
+	// æ£€æŸ¥å½“å‰çš„çº¿ç¨‹å¯¹è±¡æ˜¯å¦è¡¨ç¤ºäº†ä¸€ä¸ªæ´»åŠ¨çš„æ‰§è¡Œçº¿ç¨‹,æ˜¯å¦å¯è¢«join
 	if (t2.joinable()) {
 		t2.join();
 	}
-	// Á¢¼´·ÅÆúµ±Ç°Ïß³Ì,ÏµÍ³µ÷ÓÃÁíÒ»Ïß³Ì¼ÌÐøÖ´ÐÐ
+	// ç«‹å³æ”¾å¼ƒå½“å‰çº¿ç¨‹,ç³»ç»Ÿè°ƒç”¨å¦ä¸€çº¿ç¨‹ç»§ç»­æ‰§è¡Œ
 	this_thread::yield();
 	t3.join();
 
-	auto t = chrono::system_clock::now();
+	auto cur_time = chrono::system_clock::now();
 	// using std::chrono::milliseconds;
-	auto s = t + 20s;
-	// Ïß³ÌÐÝÃßÖÁÄ³¸öÖ¸¶¨µÄÊ±¿Ì(time point)£¬¸ÃÏß³Ì²Å±»ÖØÐÂ»½ÐÑ¡£
+	auto s = cur_time + 2s;
+	// çº¿ç¨‹ä¼‘çœ è‡³æŸä¸ªæŒ‡å®šçš„æ—¶åˆ»(time point)ï¼Œè¯¥çº¿ç¨‹æ‰è¢«é‡æ–°å”¤é†’ã€‚
 	this_thread::sleep_until(s);
 
-	// Ïß³ÌÐÝÃßÄ³¸öÖ¸¶¨µÄÊ±¼äÆ¬(time span)£¬¸ÃÏß³Ì²Å±»ÖØÐÂ»½ÐÑ
-	chrono::seconds sf(10);
+	// çº¿ç¨‹ä¼‘çœ æŸä¸ªæŒ‡å®šçš„æ—¶é—´ç‰‡(time span)ï¼Œè¯¥çº¿ç¨‹æ‰è¢«é‡æ–°å”¤é†’
+	chrono::seconds sf(3);
 	this_thread::sleep_for(sf);
 
 

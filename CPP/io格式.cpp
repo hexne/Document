@@ -35,6 +35,8 @@ int main(){
     cout << "当前精度:" << cout.precision() << " " << 1.23456789 << endl;
     // 更改当前精度,注意区分precision 和 setprecision的用法
     cout << "设置精度为10:" << setprecision(10) << 1.23456789 << endl;
+    // 设置显示5位浮点数
+    cout << std::fixed << std::setprecision(5) << 12.1234567 << endl;
 
     
 

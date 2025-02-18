@@ -127,7 +127,9 @@ vim的模式：
 
         :w 保存
         :q 退出
-        :wq 保存并推出
+        :wq 保存并退出
+
+        :set fileencoding=utf8 使用utf8编码保存当前文件
     
     插入模式（可以用a，i，o，A，I，O进入，可以用esc从插入模式退回到普通模式）
         i，a，o进入编辑模式
