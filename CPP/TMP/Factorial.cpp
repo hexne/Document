@@ -4,21 +4,19 @@
 
 template <size_t N>
 struct Factorial {
-    inline static int value = Factorial<N - 1>::value * N;
+    constexpr static int value = Factorial<N - 1>::value * N;
 };
 template <>
 struct Factorial<0> {
-    inline static int value = 1;
-
+    constexpr static int value = 1;
 };
+
+template <size_t N>
+constexpr int factorial_v = Factorial<N>::value;
 
 int main () {
 
-    std::cout << Factorial<0>::value << std::endl;
-    std::cout << Factorial<1>::value << std::endl;
-    std::cout << Factorial<2>::value << std::endl;
-    std::cout << Factorial<3>::value << std::endl;
-    std::cout << Factorial<4>::value << std::endl;
-
+    static_assert(factorial_v<0> == 1);
+    static_assert(factorial_v<5> == 120);
 
 }
