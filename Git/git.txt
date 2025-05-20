@@ -59,6 +59,11 @@ git log
 git reset -hard XXXXXX(HEAD^)
 git push origin HEAD --force
 
+
+    取消转义符, 使中文能正常显示
+git config --global core.quotepath false
+
+
     LF 和 CRLF
 git config --global core.autocrlf ture
     ture : 提交时转为LF, 检出（pull ,checkout）时转为CRLF
