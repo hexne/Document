@@ -48,5 +48,30 @@ int main() {
         std::cout << "\n";
     }
 
+
+    int nums[] = {
+        1,1,1,      2,2,2,
+        3,3,3,      4,4,4,
+        5,5,5,      6,6,6,
+        7,7,7,      8,8,8,
+    };
+    std::mdspan<int, std::dextents<size_t, 2>, std::layout_stride>
+        mdspan(
+            nums,
+            std::layout_stride::mapping{
+                std::dextents<size_t, 2>{4, 2},  // 4行×2列
+                std::array{6, 3} // 步长：行6，列3
+            }
+        );
+    for (int x = 0; x < mdspan.extent(0); ++x) {
+        for (int y = 0; y < mdspan.extent(1); ++y) {
+            std::cout << mdspan[x, y] << " ";
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
+    std::cout << std::endl;
+
+
     return 0;
 }
